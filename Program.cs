@@ -1,49 +1,38 @@
-﻿List<int> pedacos = new List<int>();
-while (true)
+﻿var material1 = new Material("Tubo 40x40", "C2250", "mp", "kg", 24);
+
+var itensMaterial1 = new List<(int comprimento, int quantidade)>
 {
-    Console.Write("Digite o comprimento do item ou 0 para finalizar: ");
-    int valor;
-    if (!int.TryParse(Console.ReadLine(), out valor))
-    {
-        Console.WriteLine("Entrada invalida, digite um numero: ");
-        continue;
-    }
-    if (valor == 0) break;
+    (2000, 2),
+    (1500, 3),
+    (1000, 1)
+};
+var material2 = new Material("perfil U 10pol", "C2250", "mp", "un", 12);
 
-    Console.Write("Digite a quantidade: ");
-    int quantidade;
-    if (!int.TryParse(Console.ReadLine(), out quantidade))
-    {
-        Console.WriteLine("Entrada invalida, digite um número: ");
-        continue;
-    }
-    for (int i = 0; i < quantidade; i++)
-    {
-        pedacos.Add(valor);
-    }
-}
-pedacos = pedacos.OrderByDescending(x => x).ToList();
-Console.WriteLine("Lista final:");
-Console.WriteLine("[" + string.Join(", ", pedacos) + "]");
-
-int qtdPedacos = pedacos.Count();
-int qtdBarras = 0;
-List<int> sobras = new List<int>();
-
-for(int i = 0;i < qtdPedacos; i++)
+var itensMaterial2 = new List<(int comprimento, int quantidade)>
 {
-    sobras = sobras.OrderByDescending(x => x).ToList();
-    if (sobras.Count > 0 && sobras[0] >= pedacos[i])
-    {
-        sobras[0] -= pedacos[i];
-    } else
-    {
-        int sobra = 6000 - pedacos[i];
-        sobras.Add(sobra);
-        qtdBarras++;
-    }
-}
-
-Console.WriteLine(qtdBarras);   
+    (2256, 5),
+    (1500, 1),
+    (1000, 1),
+    (6000, 2),
+};
 
 
+material1.CalcularQuantidade(itensMaterial1);
+material2.CalcularQuantidade(itensMaterial2);
+
+
+var Projeto1 = new Projeto("35000001", "Carrinho de Logistica");
+
+Projeto1.AdicionarMaterial(material1);
+Projeto1.AdicionarMaterial(material2);
+Projeto1.ExibirListaDeMaterial();
+
+
+//trabalhar as seguintes Melhorias:
+// criar Menu para digitar as informações;
+// incluir calculo de preço;
+// apresentar a lista em formato de tabela;
+// calculo de aproveitamento de chapas e de usinagem;
+// criar regra para identificar tipo e unidade de medida com base no codigo;
+// Extrair informações de uma planilha excel ;
+// criar lista generica com base na seleção de tipo de projeto(Ex:carrinho, escada, portão, guardacorpo)...
