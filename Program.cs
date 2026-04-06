@@ -6,7 +6,7 @@ var itensMaterial1 = new List<(int comprimento, int quantidade)>
     (1500, 3),
     (1000, 1)
 };
-var material2 = new Material("perfil U 10pol", "C2250", "mp", "un", 12);
+var material2 = new Material("perfil U 10pol", "C2251", "mp", "un", 12);
 
 var itensMaterial2 = new List<(int comprimento, int quantidade)>
 {
@@ -15,7 +15,6 @@ var itensMaterial2 = new List<(int comprimento, int quantidade)>
     (1000, 1),
     (6000, 2),
 };
-
 
 material1.CalcularQuantidade(itensMaterial1);
 material2.CalcularQuantidade(itensMaterial2);
