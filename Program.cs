@@ -1,38 +1,71 @@
-﻿var material1 = new Material("Tubo 40x40", "C2250", "mp", "kg", 24);
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-var itensMaterial1 = new List<(int comprimento, int quantidade)>
+Console.WriteLine("Insira o numero da nota");
+string numeroDaNota = Console.ReadLine()!;
+Console.WriteLine("Informe a descrição do projeto");
+string nomeDoProjeto = Console.ReadLine()!;
+
+var projeto = new Projeto(numeroDaNota, nomeDoProjeto);
+
+bool cadastrando = true;
+while (cadastrando)
 {
-    (2000, 2),
-    (1500, 3),
-    (1000, 1)
-};
-var material2 = new Material("perfil U 10pol", "C2250", "mp", "un", 12);
+    Console.WriteLine("Cadastro de Material");
+    Console.Write("Descrição: ");
+    string descricao = Console.ReadLine()!;
 
-var itensMaterial2 = new List<(int comprimento, int quantidade)>
-{
-    (2256, 5),
-    (1500, 1),
-    (1000, 1),
-    (6000, 2),
-};
+    Console.Write("Código: ");
+    string codigo = Console.ReadLine()!.ToUpper();
 
+    string tipo = "ic";
+    string unidade = "un";
+    int peso = 0;
 
-material1.CalcularQuantidade(itensMaterial1);
-material2.CalcularQuantidade(itensMaterial2);
+    if (codigo.StartsWith("C"))
+    {
+        tipo = "mp"; 
 
+        if (codigo.StartsWith("C5"))
+        {
+            unidade = "kg";
+        }
+    }
 
-var Projeto1 = new Projeto("35000001", "Carrinho de Logistica");
+    if (unidade == "kg")
+    {
+        Console.Write("Peso por unidade (kg): ");
+        peso = int.Parse(Console.ReadLine()!);
+    }
 
-Projeto1.AdicionarMaterial(material1);
-Projeto1.AdicionarMaterial(material2);
-Projeto1.ExibirListaDeMaterial();
+    var material = new Material(descricao, codigo, tipo, unidade, peso);
 
+    var itens = new List<(int comprimento, int quantidade)>();
 
-//trabalhar as seguintes Melhorias:
-// criar Menu para digitar as informações;
-// incluir calculo de preço;
-// apresentar a lista em formato de tabela;
-// calculo de aproveitamento de chapas e de usinagem;
-// criar regra para identificar tipo e unidade de medida com base no codigo;
-// Extrair informações de uma planilha excel ;
-// criar lista generica com base na seleção de tipo de projeto(Ex:carrinho, escada, portão, guardacorpo)...
+    if (material.Tipo == "ic")
+    {
+        Console.Write("Informe a quantidade: ");
+        int qtd = int.Parse(Console.ReadLine()!);
+        itens.Add((0, qtd));
+    }
+    else
+    {
+        while (true)
+        {
+            Console.Write("Comprimento (0 para sair): ");
+            int comp = int.Parse(Console.ReadLine()!);
+            if (comp == 0) break;
+            Console.Write("Quantidade: ");
+            int qtd = int.Parse(Console.ReadLine()!);
+            itens.Add((comp, qtd));
+        }
+    }
+    material.CalcularQuantidade(itens);
+    projeto.AdicionarMaterial(material);
+    Console.Write("\nOriginal cadastrar outro material? (s/n): ");
+    cadastrando = Console.ReadLine()?.ToLower() == "s";
+}
+
+Console.Clear();
+projeto.ExibirListaDeMaterial();
